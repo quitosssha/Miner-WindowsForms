@@ -18,7 +18,8 @@ namespace Miner.Controllers
         }
 
         public static void InitStateChanged(
-            this GameModel game, 
+            this GameModel game,
+            Form1 form,
             TableLayoutPanel table, 
             Dictionary<CellType, Color> Colors)
         {
@@ -38,7 +39,7 @@ namespace Miner.Controllers
 
                 if (state == CellType.Mine)
                 {
-                    game.GameOver();
+                    game.GameOver(form);
                 }
             };
         }

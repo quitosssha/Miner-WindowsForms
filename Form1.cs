@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,9 +37,18 @@ namespace Miner
                 }
             Controls.Add(table);
 
-            game.InitStateChanged(table, Colors);
+            game.InitStateChanged(this, table, Colors);
 
             game.Start();
+        }
+
+        public void ShowGameOverMessage()
+        {
+            var result = MessageBox.Show("Вы проиграли! Начать сначала?", "", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+                Close();
         }
 
         private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>

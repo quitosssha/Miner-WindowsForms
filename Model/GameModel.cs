@@ -4,15 +4,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Miner
 {
     public class GameModel
     {
-        private CellType[,] gameField;
-        private readonly CellType[,] hiddenField;
-        public readonly int Width;
-        public readonly int Height;
+        public CellType[,] gameField { get; private set; }
+        private CellType[,] hiddenField { get; }
+        public int Width { get; }
+        public int Height { get; }
+
         public event Action<int, int, CellType> StateChanged;
 
         public GameModel(int width, int height)
@@ -21,6 +23,12 @@ namespace Miner
             Height = height;
             hiddenField = new CellType[width, height];
             gameField = new CellType[width, height];
+        }
+
+        void SetState(int row, int column, CellType state)
+        {
+            gameField[row, column] = state;
+            StateChanged?.Invoke(row, column, state);
         }
 
         public void Start()
@@ -39,12 +47,6 @@ namespace Miner
         {
             if (gameField[row, column] == CellType.Unknown)
                 SetState(row, column, hiddenField[row, column]);
-        }
-
-        void SetState(int row, int column, CellType state)
-        {
-            gameField[row, column] = state;
-            StateChanged?.Invoke(row, column, state);
         }
 
         public int CountMinesAround(int row, int column)
@@ -73,9 +75,20 @@ namespace Miner
                 }
         }
 
-        private bool OutOfBounds(int row, int column) =>
+        bool OutOfBounds(int row, int column) =>
             row < 0 || row >= Height
             || column < 0 || column >= Width;
         
+        public void GameOver(Form1 form)
+        {
+            StateChanged = null;
+            for (int row = 0; row < Height; row++)
+                for (int column = 0; column < Width; column++)
+                {
+                    if (gameField[row, column] == CellType.Unknown)
+                        OpenCell(row, column);
+                }
+            form.ShowGameOverMessage();
+        }
     }
 }
