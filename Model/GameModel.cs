@@ -28,13 +28,19 @@ namespace Miner
                 for (int column = 0; column < Width; column++)
                 {
                     var state = rnd.Next(3) == 0 ? CellType.Mine : CellType.Empty;
-                    SetState(row, column, state);
+                    hiddenField[row, column] = state;
+                    SetState(row, column, CellType.Unknown);
                 }
+        }
+
+        public void OpenCell(int row, int column)
+        {
+            SetState(row, column, hiddenField[row, column]);
         }
 
         void SetState(int row, int column, CellType state)
         {
-            hiddenField[row, column] = state;
+            gameField[row, column] = state;
             StateChanged?.Invoke(row, column, state);
         }
         
