@@ -19,9 +19,36 @@ namespace Miner
         GameModel game;
         TableLayoutPanel table;
 
-        public Form1(GameModel game) 
+        public Form1() 
         {
-            this.game = game;
+            StartNewGame();
+        }
+
+        public void ShowGameOverMessage()
+        {
+            var result = MessageBox.Show("Вы проиграли! Начать сначала?", "", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+                Close();
+            else
+            {
+                Controls.Clear();
+                StartNewGame();
+            }
+        }
+
+        private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>
+        {
+            { CellType.Mine, Color.Black },
+            { CellType.Empty, Color.White },
+            { CellType.Unknown, Color.FromArgb(200, 200, 200) },
+            { CellType.Marked, Color.Red }
+        };
+
+        private void StartNewGame()
+        {
+            game = new GameModel(10, 10);
             table = new TableLayoutPanel() { Dock = DockStyle.Fill };
             for (int column = 0; column < game.Width; column++)
                 table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 30));
@@ -41,22 +68,5 @@ namespace Miner
 
             game.Start();
         }
-
-        public void ShowGameOverMessage()
-        {
-            var result = MessageBox.Show("Вы проиграли! Начать сначала?", "", 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (result == DialogResult.No)
-                Close();
-        }
-
-        private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>
-        {
-            { CellType.Mine, Color.Black },
-            { CellType.Empty, Color.White },
-            { CellType.Unknown, Color.FromArgb(200, 200, 200) },
-            { CellType.Marked, Color.Red }
-        };
     }
 }
