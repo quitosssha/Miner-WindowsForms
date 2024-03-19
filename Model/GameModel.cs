@@ -11,7 +11,7 @@ namespace Miner
     public class GameModel
     {
         private CellType[,] hiddenField;
-        public CellType[,] gameField { get; private set; }
+        public CellType[,] GameField { get; private set; }
         public int Width { get; }
         public int Height { get; }
         public bool IsOver { get; private set; }
@@ -26,12 +26,12 @@ namespace Miner
             Height = height;
             IsOver = false;
             hiddenField = new CellType[width, height];
-            gameField = new CellType[width, height];
+            GameField = new CellType[width, height];
         }
 
         void SetState(int row, int column, CellType state)
         {
-            gameField[row, column] = state;
+            GameField[row, column] = state;
             StateChanged?.Invoke(row, column, state);
         }
 
@@ -54,7 +54,7 @@ namespace Miner
 
         public void OpenCell(int row, int column)
         {
-            if (gameField[row, column] == CellType.Unknown)
+            if (GameField[row, column] == CellType.Unknown)
             {
                 SetState(row, column, hiddenField[row, column]);
                 emptyFieldsCount--;
@@ -65,14 +65,15 @@ namespace Miner
 
         public void MarkCell(int row, int column)
         {
-            if (gameField[row, column] == CellType.Unknown)
+            if (GameField[row, column] == CellType.Unknown)
                 SetState(row, column, CellType.Marked);
-            else if (gameField[row, column] == CellType.Marked)
+            else if (GameField[row, column] == CellType.Marked)
                 SetState(row, column, CellType.Unknown);
         }
 
-        public int CountMinesAround(int row, int column)
+        public int CountCellsAround(int row, int column, CellType state, bool searchInHidden = true)
         {
+            var field = searchInHidden ? hiddenField : GameField;
             int counter = 0;
             for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++)
@@ -80,7 +81,7 @@ namespace Miner
                     if (i == 0 && j == 0) continue;
                     
                     if (!OutOfBounds(row + i, column + j))
-                        if (hiddenField[row + i, column + j] == CellType.Mine)
+                        if (field[row + i, column + j] == state)
                             counter++;
                 }
 
@@ -107,7 +108,7 @@ namespace Miner
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {
-                    if (gameField[row, column] == CellType.Unknown)
+                    if (GameField[row, column] == CellType.Unknown)
                         OpenCell(row, column);
                 }
             form.FinishGameWithMessage("Вы проиграли... Начать сначала?", "Поражение...");

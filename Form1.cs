@@ -21,28 +21,6 @@ namespace Miner
 
         public Form1() => StartNewGame();
 
-        public void FinishGameWithMessage(string message, string caption = "")
-        {
-            var result = MessageBox.Show(message, caption,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (result == DialogResult.No)
-                Close();
-            else
-            {
-                Controls.Clear();
-                StartNewGame();
-            }
-        }
-
-        private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>
-        {
-            { CellType.Mine, Color.Black },
-            { CellType.Empty, Color.White },
-            { CellType.Unknown, Color.FromArgb(200, 200, 200) },
-            { CellType.Marked, Color.Red }
-        };
-
         private void StartNewGame()
         {
             game = new GameModel(this, 10, 10);
@@ -65,5 +43,27 @@ namespace Miner
 
             game.Start();
         }
+
+        public void FinishGameWithMessage(string message, string caption = "")
+        {
+            var result = MessageBox.Show(message, caption,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+                Close();
+            else
+            {
+                Controls.Clear();
+                StartNewGame();
+            }
+        }
+
+        private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>
+        {
+            { CellType.Mine, Color.Black },
+            { CellType.Empty, Color.White },
+            { CellType.Unknown, Color.FromArgb(200, 200, 200) },
+            { CellType.Marked, Color.Red }
+        };
     }
 }

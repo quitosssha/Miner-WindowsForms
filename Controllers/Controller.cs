@@ -21,6 +21,17 @@ namespace Miner.Controllers
                 if (args.Button == MouseButtons.Right)
                     game.MarkCell(row, column);
             };
+
+            //button.MouseDoubleClick += (sender, args) =>
+            //{
+            //    if (game.GameField[row, column] == CellType.Empty)
+            //    {
+            //        if (game.CountCellsAround(row, column, CellType.Marked, searchInHidden: false)
+            //            == game.CountCellsAround(row, column, CellType.Mine))
+            //            game.OpenCellsAround(row, column);
+            //    }
+            //    game.GameOver();
+            //};
         }
 
         public static void InitStateChanged(
@@ -35,7 +46,7 @@ namespace Miner.Controllers
 
                 if (state == CellType.Empty)
                 {
-                    int minesAround = game.CountMinesAround(row, column);
+                    int minesAround = game.CountCellsAround(row, column, CellType.Mine);
                     if (minesAround > 0)
                         button.Text = minesAround.ToString();
                     else
