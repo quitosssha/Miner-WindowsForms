@@ -10,16 +10,18 @@ namespace Miner
 {
     public class GameModel
     {
+        private CellType[,] hiddenField;
         public CellType[,] gameField { get; private set; }
-        private CellType[,] hiddenField { get; }
         public int Width { get; }
         public int Height { get; }
         public bool IsOver { get; private set; }
-
+        private int emptyFieldsCount;
         public event Action<int, int, CellType> StateChanged;
+        private Form1 form;
 
-        public GameModel(int width, int height)
+        public GameModel(Form1 form, int width, int height)
         {
+            this.form = form;
             Width = width; 
             Height = height;
             IsOver = false;
@@ -39,8 +41,13 @@ namespace Miner
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {
-                    var state = rnd.Next(15) == 0 ? CellType.Mine : CellType.Empty;
-                    hiddenField[row, column] = state;
+                    if (rnd.Next(15) == 0)
+                        hiddenField[row, column] = CellType.Mine;
+                    else
+                    {
+                        hiddenField[row, column] = CellType.Empty;
+                        emptyFieldsCount++;
+                    }
                     SetState(row, column, CellType.Unknown);
                 }
         }
@@ -48,7 +55,20 @@ namespace Miner
         public void OpenCell(int row, int column)
         {
             if (gameField[row, column] == CellType.Unknown)
+            {
                 SetState(row, column, hiddenField[row, column]);
+                emptyFieldsCount--;
+            }
+            if (emptyFieldsCount == 0 && !IsOver)
+                GameWon();
+        }
+
+        public void MarkCell(int row, int column)
+        {
+            if (gameField[row, column] == CellType.Unknown)
+                SetState(row, column, CellType.Marked);
+            else if (gameField[row, column] == CellType.Marked)
+                SetState(row, column, CellType.Unknown);
         }
 
         public int CountMinesAround(int row, int column)
@@ -81,7 +101,7 @@ namespace Miner
             row < 0 || row >= Height
             || column < 0 || column >= Width;
         
-        public void GameOver(Form1 form)
+        public void GameOver()
         {
             IsOver = true;
             for (int row = 0; row < Height; row++)
@@ -90,7 +110,10 @@ namespace Miner
                     if (gameField[row, column] == CellType.Unknown)
                         OpenCell(row, column);
                 }
-            form.ShowGameOverMessage();
+            form.FinishGameWithMessage("Вы проиграли... Начать сначала?", "Поражение...");
         }
+
+        private void GameWon() =>
+            form.FinishGameWithMessage("Вы победили! Начать сначала?", "Победа!");
     }
 }

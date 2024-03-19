@@ -14,12 +14,17 @@ namespace Miner.Controllers
     {
         public static void InitCommands(this GameModel game, Button button, int row, int column)
         {
-            button.Click += (sender, args) => game.OpenCell(row, column);
+            button.MouseDown += (sender, args) =>
+            {
+                if (args.Button == MouseButtons.Left)
+                    game.OpenCell(row, column);
+                if (args.Button == MouseButtons.Right)
+                    game.MarkCell(row, column);
+            };
         }
 
         public static void InitStateChanged(
             this GameModel game,
-            Form1 form,
             TableLayoutPanel table,
             Dictionary<CellType, Color> Colors)
         {
@@ -43,7 +48,7 @@ namespace Miner.Controllers
                 var button = (Button)table.GetControlFromPosition(column, row);
 
                 if (state == CellType.Mine && !game.IsOver)
-                    game.GameOver(form);
+                    game.GameOver();
             };
         }
     }

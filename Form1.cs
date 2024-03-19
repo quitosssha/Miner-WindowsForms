@@ -19,14 +19,11 @@ namespace Miner
         GameModel game;
         TableLayoutPanel table;
 
-        public Form1() 
-        {
-            StartNewGame();
-        }
+        public Form1() => StartNewGame();
 
-        public void ShowGameOverMessage()
+        public void FinishGameWithMessage(string message, string caption = "")
         {
-            var result = MessageBox.Show("Вы проиграли! Начать сначала?", "", 
+            var result = MessageBox.Show(message, caption,
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.No)
@@ -48,7 +45,7 @@ namespace Miner
 
         private void StartNewGame()
         {
-            game = new GameModel(10, 10);
+            game = new GameModel(this, 10, 10);
             table = new TableLayoutPanel() { Dock = DockStyle.Fill };
             for (int column = 0; column < game.Width; column++)
                 table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 30));
@@ -64,7 +61,7 @@ namespace Miner
                 }
             Controls.Add(table);
 
-            game.InitStateChanged(this, table, Colors);
+            game.InitStateChanged(table, Colors);
 
             game.Start();
         }
