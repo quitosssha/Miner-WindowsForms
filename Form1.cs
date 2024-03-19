@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Miner.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,19 +26,16 @@ namespace Miner
             for (int row = 0; row < game.Height; row++)
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
 
-            for (int iRow = 0; iRow < game.Height; iRow++)
-                for (int iColumn = 0; iColumn < game.Width; iColumn++)
+            for (int row = 0; row < game.Height; row++)
+                for (int column = 0; column < game.Width; column++)
                 {
-                    var column = iColumn;
-                    var row = iRow;
                     var button = new Button() { Dock = DockStyle.Fill };
                     table.Controls.Add(button, column, row);
-                    button.Click += (sender, args) => game.OpenCell(row, column);
+                    game.InitCommands(button, row, column);
                 }
             Controls.Add(table);
 
-            game.StateChanged += (row, column, state) =>
-                ((Button)table.GetControlFromPosition(column, row)).BackColor = Colors[state];
+            game.InitStateChanged(table, Colors);
 
             game.Start();
         }
