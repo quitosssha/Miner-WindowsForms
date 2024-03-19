@@ -14,6 +14,7 @@ namespace Miner
         private CellType[,] hiddenField { get; }
         public int Width { get; }
         public int Height { get; }
+        public bool IsOver { get; private set; }
 
         public event Action<int, int, CellType> StateChanged;
 
@@ -21,6 +22,7 @@ namespace Miner
         {
             Width = width; 
             Height = height;
+            IsOver = false;
             hiddenField = new CellType[width, height];
             gameField = new CellType[width, height];
         }
@@ -81,7 +83,7 @@ namespace Miner
         
         public void GameOver(Form1 form)
         {
-            StateChanged = null;
+            IsOver = true;
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {

@@ -20,7 +20,7 @@ namespace Miner.Controllers
         public static void InitStateChanged(
             this GameModel game,
             Form1 form,
-            TableLayoutPanel table, 
+            TableLayoutPanel table,
             Dictionary<CellType, Color> Colors)
         {
             game.StateChanged += (row, column, state) =>
@@ -36,11 +36,14 @@ namespace Miner.Controllers
                     else
                         game.OpenCellsAround(row, column);
                 }
+            };
 
-                if (state == CellType.Mine)
-                {
+            game.StateChanged += (row, column, state) =>
+            {
+                var button = (Button)table.GetControlFromPosition(column, row);
+
+                if (state == CellType.Mine && !game.IsOver)
                     game.GameOver(form);
-                }
             };
         }
     }
