@@ -1,4 +1,5 @@
 ﻿using Miner.Controllers;
+using Miner.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,11 @@ namespace Miner
         GameModel game;
         TableLayoutPanel table;
 
-        public Form1() => StartNewGame();
+        public Form1()
+        {
+            InitializeComponent();
+            StartNewGame();
+        }
 
         private void StartNewGame()
         {
@@ -33,7 +38,7 @@ namespace Miner
             for (int row = 0; row < game.Height; row++)
                 for (int column = 0; column < game.Width; column++)
                 {
-                    var button = new Button() { Dock = DockStyle.Fill };
+                    var button = new DoubleClickableButton() { Dock = DockStyle.Fill };
                     table.Controls.Add(button, column, row);
                     game.InitCommands(button, row, column);
                 }

@@ -54,6 +54,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\DoubleClickableButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Model\GameModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

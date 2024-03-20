@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Miner.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing;
@@ -12,26 +13,29 @@ namespace Miner.Controllers
 {
     public static class Controller
     {
-        public static void InitCommands(this GameModel game, Button button, int row, int column)
+        public static void InitCommands(this GameModel game, DoubleClickableButton button, int row, int column)
         {
             button.MouseDown += (sender, args) =>
             {
                 if (args.Button == MouseButtons.Left)
-                    game.OpenCell(row, column);
+                    if (button.DoubleClicked)
+                    {
+                        if (game.GameField[row, column] == CellType.Empty)
+                            if (game.CountCellsAround(row, column, CellType.Marked, searchInHidden: false)
+                                == game.CountCellsAround(row, column, CellType.Mine))
+                                game.OpenCellsAround(row, column);
+                    }
+                    else
+                        game.OpenCell(row, column);
+
                 if (args.Button == MouseButtons.Right)
                     game.MarkCell(row, column);
-            };
-
-            //button.MouseDoubleClick += (sender, args) =>
-            //{
-            //    if (game.GameField[row, column] == CellType.Empty)
-            //    {
-            //        if (game.CountCellsAround(row, column, CellType.Marked, searchInHidden: false)
-            //            == game.CountCellsAround(row, column, CellType.Mine))
-            //            game.OpenCellsAround(row, column);
-            //    }
-            //    game.GameOver();
             //};
+
+            //button.MouseDown += (sender, args) =>
+            //{
+                
+            };
         }
 
         public static void InitStateChanged(

@@ -108,7 +108,8 @@ namespace Miner
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {
-                    if (GameField[row, column] == CellType.Unknown)
+                    if (GameField[row, column] == CellType.Unknown
+                        && hiddenField[row, column] == CellType.Mine)
                         OpenCell(row, column);
                 }
             form.FinishGameWithMessage("Вы проиграли... Начать сначала?", "Поражение...");
