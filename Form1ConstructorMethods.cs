@@ -17,12 +17,12 @@ namespace Miner
 
         void StartNewGame()
         {
-            _game = new GameModel(this, 10, 10);
+            _game = new GameModel(this, _gameWidth, _gameHeight);
             _table = new TableLayoutPanel() { Dock = DockStyle.Fill };
-            for (int column = 0; column < _game.Width; column++)
-                _table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, Height / _game.Height));
-            for (int row = 0; row < _game.Height; row++)
-                _table.RowStyles.Add(new RowStyle(SizeType.Percent, Width / _game.Width));
+            for (int column = 0; column < _gameWidth; column++)
+                _table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, Height / _gameHeight));
+            for (int row = 0; row < _gameHeight; row++)
+                _table.RowStyles.Add(new RowStyle(SizeType.Percent, Width / _gameWidth));
 
             for (int row = 0; row < _game.Height; row++)
                 for (int column = 0; column < _game.Width; column++)
@@ -33,7 +33,7 @@ namespace Miner
                 }
             Controls.Add(_table);
 
-            _game.InitStateChanged(_table, ColorsByCellType);
+            _game.InitStateChanged(_table, ColorsByCellState);
 
             _game.Start();
         }

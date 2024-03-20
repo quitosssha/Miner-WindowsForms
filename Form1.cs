@@ -17,11 +17,14 @@ namespace Miner
 {
     public partial class Form1 : Form
     {
+        readonly int _gameWidth = 15;
+        readonly int _gameHeight = 15;
+
         public Form1()
         {
             InitializeComponent();
-            ClientSize = new Size(300, 300);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            ClientSize = new Size(_gameWidth * 30, _gameHeight * 30);
             StartNewGame();
         }
 
@@ -39,7 +42,7 @@ namespace Miner
             }
         }
 
-        private static readonly Dictionary<CellState, Color> ColorsByCellType = new Dictionary<CellState, Color>
+        private static readonly Dictionary<CellState, Color> ColorsByCellState = new Dictionary<CellState, Color>
         {
             { CellState.Mine, Color.Black },
             { CellState.Empty, Color.White },

@@ -7,6 +7,11 @@ using System.Windows.Forms;
 
 namespace Miner.Model
 {
+    /// <summary>
+    /// In Windows Forms common Button.DoubleClick if unaviable, 
+    /// so you can use DoubleClickableButton to get
+    /// bool this.DoubleClicked
+    /// </summary>
     public class DoubleClickableButton : Button
     {
         private DateTime lastClickTime = DateTime.MinValue;

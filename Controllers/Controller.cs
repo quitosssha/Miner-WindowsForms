@@ -47,7 +47,11 @@ namespace Miner.Controllers
                 {
                     int minesAround = game.CountCellsAround(row, column, CellState.Mine);
                     if (minesAround > 0)
+                    {
                         button.Text = minesAround.ToString();
+                        button.Font = new Font("Arial", 12f ,FontStyle.Bold);
+
+                    }
                     else
                         game.OpenCellsAround(row, column);
                 }
@@ -55,8 +59,6 @@ namespace Miner.Controllers
 
             game.StateChanged += (row, column, state) =>
             {
-                var button = (Button)table.GetControlFromPosition(column, row);
-
                 if (state == CellState.Mine && !game.IsOver)
                     game.GameOver();
             };
