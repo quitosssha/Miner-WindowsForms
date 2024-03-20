@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Miner
 {
-    public enum CellType
+    public enum CellState
     {
         Unknown,
         Empty,

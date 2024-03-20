@@ -12,7 +12,7 @@ namespace Miner.Model
         private DateTime lastClickTime = DateTime.MinValue;
         public bool DoubleClicked
         {
-            get { return (DateTime.Now - lastClickTime).TotalMilliseconds <= SystemInformation.DoubleClickTime; }
+            get => (DateTime.Now - lastClickTime).TotalMilliseconds <= SystemInformation.DoubleClickTime;
         }
 
         public DoubleClickableButton()

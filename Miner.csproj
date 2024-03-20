@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form1ConstructorMethods.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controllers\Controller.cs" />
-    <Compile Include="Model\CellType.cs" />
+    <Compile Include="Model\CellState.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

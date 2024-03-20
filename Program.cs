@@ -13,7 +13,7 @@ namespace Miner
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1() { ClientSize = new Size(300, 300)});
+            Application.Run(new Form1());
         }
     }
 }

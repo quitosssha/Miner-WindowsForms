@@ -17,36 +17,12 @@ namespace Miner
 {
     public partial class Form1 : Form
     {
-        GameModel game;
-        TableLayoutPanel table;
-
         public Form1()
         {
             InitializeComponent();
+            ClientSize = new Size(300, 300);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             StartNewGame();
-        }
-
-        private void StartNewGame()
-        {
-            game = new GameModel(this, 10, 10);
-            table = new TableLayoutPanel() { Dock = DockStyle.Fill };
-            for (int column = 0; column < game.Width; column++)
-                table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 30));
-            for (int row = 0; row < game.Height; row++)
-                table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
-
-            for (int row = 0; row < game.Height; row++)
-                for (int column = 0; column < game.Width; column++)
-                {
-                    var button = new DoubleClickableButton() { Dock = DockStyle.Fill };
-                    table.Controls.Add(button, column, row);
-                    game.InitCommands(button, row, column);
-                }
-            Controls.Add(table);
-
-            game.InitStateChanged(table, Colors);
-
-            game.Start();
         }
 
         public void FinishGameWithMessage(string message, string caption = "")
@@ -63,12 +39,12 @@ namespace Miner
             }
         }
 
-        private static readonly Dictionary<CellType, Color> Colors = new Dictionary<CellType, Color>
+        private static readonly Dictionary<CellState, Color> ColorsByCellType = new Dictionary<CellState, Color>
         {
-            { CellType.Mine, Color.Black },
-            { CellType.Empty, Color.White },
-            { CellType.Unknown, Color.FromArgb(200, 200, 200) },
-            { CellType.Marked, Color.Red }
+            { CellState.Mine, Color.Black },
+            { CellState.Empty, Color.White },
+            { CellState.Unknown, Color.FromArgb(200, 200, 200) },
+            { CellState.Marked, Color.Red }
         };
     }
 }

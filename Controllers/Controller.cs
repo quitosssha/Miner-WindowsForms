@@ -20,9 +20,9 @@ namespace Miner.Controllers
                 if (args.Button == MouseButtons.Left)
                     if (button.DoubleClicked)
                     {
-                        if (game.GameField[row, column] == CellType.Empty)
-                            if (game.CountCellsAround(row, column, CellType.Marked, searchInHidden: false)
-                                == game.CountCellsAround(row, column, CellType.Mine))
+                        if (game.GameField[row, column] == CellState.Empty)
+                            if (game.CountCellsAround(row, column, CellState.Marked, searchInHidden: false)
+                                == game.CountCellsAround(row, column, CellState.Mine))
                                 game.OpenCellsAround(row, column);
                     }
                     else
@@ -30,27 +30,22 @@ namespace Miner.Controllers
 
                 if (args.Button == MouseButtons.Right)
                     game.MarkCell(row, column);
-            //};
-
-            //button.MouseDown += (sender, args) =>
-            //{
-                
             };
         }
 
         public static void InitStateChanged(
             this GameModel game,
             TableLayoutPanel table,
-            Dictionary<CellType, Color> Colors)
+            Dictionary<CellState, Color> Colors)
         {
             game.StateChanged += (row, column, state) =>
             {
                 var button = (Button)table.GetControlFromPosition(column, row);
                 button.BackColor = Colors[state];
 
-                if (state == CellType.Empty)
+                if (state == CellState.Empty)
                 {
-                    int minesAround = game.CountCellsAround(row, column, CellType.Mine);
+                    int minesAround = game.CountCellsAround(row, column, CellState.Mine);
                     if (minesAround > 0)
                         button.Text = minesAround.ToString();
                     else
@@ -62,7 +57,7 @@ namespace Miner.Controllers
             {
                 var button = (Button)table.GetControlFromPosition(column, row);
 
-                if (state == CellType.Mine && !game.IsOver)
+                if (state == CellState.Mine && !game.IsOver)
                     game.GameOver();
             };
         }
