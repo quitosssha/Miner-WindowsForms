@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace Miner
 {
@@ -41,7 +42,7 @@ namespace Miner
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {
-                    if (rnd.Next(5) == 0)
+                    if (rnd.Next(10) == 0)
                         hiddenField[row, column] = CellState.Mine;
                     else
                     {
@@ -71,7 +72,7 @@ namespace Miner
                 SetState(row, column, CellState.Unknown);
         }
 
-        public int CountCellsAround(int row, int column, CellState state, bool searchInHidden = true)
+        public int CountCellsAround(int row, int column, CellState state1, CellState state2 = CellState.Null, bool searchInHidden = true)
         {
             var field = searchInHidden ? hiddenField : GameField;
             int counter = 0;
@@ -81,7 +82,7 @@ namespace Miner
                     if (i == 0 && j == 0) continue;
                     
                     if (!OutOfBounds(row + i, column + j))
-                        if (field[row + i, column + j] == state)
+                        if (field[row + i, column + j] == state1 || field[row + i, column + j] == state2)
                             counter++;
                 }
 
@@ -95,6 +96,16 @@ namespace Miner
                 {
                     if (!OutOfBounds(row + i, column + j))
                         OpenCell(row + i, column + j);
+                }
+        }
+
+        public void MarkCellsAround(int row, int column)
+        {
+            for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (!OutOfBounds(row + i, column + j) && GameField[row + i, column + j] == CellState.Unknown)
+                        MarkCell(row + i, column + j);
                 }
         }
 

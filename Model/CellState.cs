@@ -11,6 +11,7 @@ namespace Miner
         Unknown,
         Empty,
         Mine,
-        Marked
+        Marked,
+        Null
     }
 }

@@ -18,18 +18,27 @@ namespace Miner.Controllers
             button.MouseDown += (sender, args) =>
             {
                 if (args.Button == MouseButtons.Left)
-                    if (button.DoubleClicked)
-                    {
-                        if (game.GameField[row, column] == CellState.Empty)
-                            if (game.CountCellsAround(row, column, CellState.Marked, searchInHidden: false)
-                                == game.CountCellsAround(row, column, CellState.Mine))
-                                game.OpenCellsAround(row, column);
-                    }
-                    else
-                        game.OpenCell(row, column);
+                    game.OpenCell(row, column);
 
                 if (args.Button == MouseButtons.Right)
                     game.MarkCell(row, column);
+            };
+
+            button.MouseDown += (sender, args) =>
+            {
+                if (button.DoubleClicked || button.ClickedWithBothMouseButtons)
+                {
+                    if (game.GameField[row, column] == CellState.Empty)
+                    {
+                        if (game.CountCellsAround(row, column, CellState.Marked, searchInHidden: false)
+                            == game.CountCellsAround(row, column, CellState.Mine))
+                            game.OpenCellsAround(row, column);
+
+                        else if (game.CountCellsAround(row, column, CellState.Unknown, CellState.Marked, searchInHidden: false)
+                            == game.CountCellsAround(row, column, CellState.Mine))
+                            game.MarkCellsAround(row, column);
+                    }
+                }
             };
         }
 
