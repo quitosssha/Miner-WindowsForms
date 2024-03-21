@@ -59,7 +59,6 @@ namespace Miner.Controllers
                     {
                         button.Text = minesAround.ToString();
                         button.Font = new Font("Arial", 12f ,FontStyle.Bold);
-
                     }
                     else
                         game.OpenCellsAround(row, column);

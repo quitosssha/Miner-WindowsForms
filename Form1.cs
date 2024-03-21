@@ -19,12 +19,14 @@ namespace Miner
     {
         readonly int _gameWidth = 10;
         readonly int _gameHeight = 10;
+        readonly int _amountOfMines = 10;
 
         public Form1()
         {
             InitializeComponent();
             ClientSize = new Size(300, 300);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             ClientSize = new Size(_gameWidth * 30, _gameHeight * 30);
             StartNewGame();
         }

@@ -21,8 +21,8 @@ namespace Miner.Model
 
         public bool DoubleClicked
         {
-            get => 
-                (DateTime.Now - lastClickTime).TotalMilliseconds 
+            get =>
+                (DateTime.Now - lastClickTime).TotalMilliseconds
                 <= SystemInformation.DoubleClickTime;
         }
 
@@ -40,7 +40,7 @@ namespace Miner.Model
             MouseUp += (sender, args) => SetButtonClicked(args, false);
         }
 
-        private void SetButtonClicked (MouseEventArgs args, bool isClicked)
+        private void SetButtonClicked(MouseEventArgs args, bool isClicked)
         {
             if (args.Button == MouseButtons.Left)
                 leftButtonClicked = isClicked;

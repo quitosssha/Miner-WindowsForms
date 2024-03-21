@@ -17,7 +17,7 @@ namespace Miner
 
         void StartNewGame()
         {
-            _game = new GameModel(this, _gameWidth, _gameHeight);
+            _game = new GameModel(this, _gameWidth, _gameHeight, _amountOfMines);
             _table = new TableLayoutPanel() { Dock = DockStyle.Fill };
             for (int column = 0; column < _gameWidth; column++)
                 _table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, Height / _gameHeight));

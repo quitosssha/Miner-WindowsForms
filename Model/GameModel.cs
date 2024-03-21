@@ -15,17 +15,27 @@ namespace Miner
         public CellState[,] GameField { get; private set; }
         public int Width { get; }
         public int Height { get; }
-        public bool GameIsOver { get; private set; }
-        private int emptyFieldsCount;
-        public event Action<int, int, CellState> StateChanged;
-        private Form1 form;
+        public bool GameIsOver { get; private set; } = false;
 
-        public GameModel(Form1 form, int width, int height)
+        //public double ElapsedTime
+        //{
+        //    get => timer.
+        //}
+
+        public event Action<int, int, CellState> StateChanged;
+
+        private Timer timer = new Timer();
+        private int emptyFieldsCount;
+        private readonly int minesCount;
+        private readonly Form1 form;
+
+        public GameModel(Form1 form, int width, int height, int minesAmount)
         {
             this.form = form;
             Width = width; 
             Height = height;
-            GameIsOver = false;
+            minesCount = minesAmount;
+            emptyFieldsCount = width * height - minesAmount;
             hiddenField = new CellState[width, height];
             GameField = new CellState[width, height];
         }
@@ -39,18 +49,27 @@ namespace Miner
         public void Start()
         {
             Random rnd = new Random();
-            for (int row = 0; row < Height; row++)
-                for (int column = 0; column < Width; column++)
+            int minesPlaced = 0;
+            while (minesPlaced < minesCount)
+            {
+                int column = rnd.Next(Width);
+                int row = rnd.Next(Height);
+                if (hiddenField[row, column] != CellState.Mine)
                 {
-                    if (rnd.Next(10) == 0)
-                        hiddenField[row, column] = CellState.Mine;
-                    else
-                    {
-                        hiddenField[row, column] = CellState.Empty;
-                        emptyFieldsCount++;
-                    }
-                    SetState(row, column, CellState.Unknown);
+                    hiddenField[row, column] = CellState.Mine;
+                    minesPlaced++;
                 }
+            }
+
+            for (int row = 0; row < Height; row++)
+            for (int column = 0; column < Width; column++)
+            {
+                SetState(row, column, CellState.Unknown);
+                if (hiddenField[row, column] != CellState.Mine)
+                    hiddenField[row, column] = CellState.Empty;
+            }
+
+            timer.Start();
         }
 
         public void OpenCell(int row, int column)
@@ -64,9 +83,9 @@ namespace Miner
             if (emptyFieldsCount == 0 && !GameIsOver)
                 GameWon();
 
-            if (GameField[row, column] == CellState.Marked
+            if (GameIsOver
                 && hiddenField[row, column] == CellState.Mine
-                && GameIsOver)
+                && GameField[row, column] == CellState.Marked)
                 SetState(row, column, CellState.Mine);
         }
 
@@ -121,6 +140,7 @@ namespace Miner
         
         public void GameOver()
         {
+            timer.Stop();
             GameIsOver = true;
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
@@ -132,7 +152,10 @@ namespace Miner
             form.FinishGameWithMessage("Вы проиграли... Начать сначала?", "Поражение...");
         }
 
-        private void GameWon() =>
+        private void GameWon()
+        {
+            timer.Stop();
             form.FinishGameWithMessage("Вы победили! Начать сначала?", "Победа!");
+        }
     }
 }
