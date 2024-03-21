@@ -19,10 +19,12 @@ namespace Miner
         public bool GameIsOver { get; private set; } = false;
 
         public event Action<int, int, CellState> StateChanged;
+        public event Action<int> MinesAmountChanged;
 
         private Stopwatch watch = new Stopwatch();
         private int emptyFieldsCount;
         private readonly int minesCount;
+        private int markedFieldsCount = 0;
         private readonly Form1 form;
 
         public GameModel(Form1 form, int width, int height, int minesAmount)
@@ -65,6 +67,7 @@ namespace Miner
                     hiddenField[row, column] = CellState.Empty;
             }
 
+            MinesAmountChanged?.Invoke(minesCount);
             watch.Start();
         }
 
@@ -88,9 +91,16 @@ namespace Miner
         public void MarkCell(int row, int column)
         {
             if (GameField[row, column] == CellState.Unknown)
+            {
                 SetState(row, column, CellState.Marked);
+                markedFieldsCount++;
+            }
             else if (GameField[row, column] == CellState.Marked)
+            {
                 SetState(row, column, CellState.Unknown);
+                markedFieldsCount--;
+            }
+            MinesAmountChanged?.Invoke(minesCount - markedFieldsCount);
         }
 
         public int CountCellsAround(int row, int column, CellState state1, CellState state2 = CellState.Null, bool searchInHidden = true)

@@ -71,5 +71,16 @@ namespace Miner.Controllers
                     game.GameOver();
             };
         }
+
+        public static void InitHead(this GameModel game, TableLayoutPanel head)
+        {
+            var leftMinesLabel = (Label)head.GetControlFromPosition(0, 0);
+            var timeElapsedLabel = (Label)head.GetControlFromPosition(1, 0);
+
+            game.MinesAmountChanged += (amount) =>
+            {
+                leftMinesLabel.Text = $"Mines left: {amount}";
+            };
+        }
     }
 }
