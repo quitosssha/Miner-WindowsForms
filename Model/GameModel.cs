@@ -15,7 +15,7 @@ namespace Miner
         public CellState[,] GameField { get; private set; }
         public int Width { get; }
         public int Height { get; }
-        public bool IsOver { get; private set; }
+        public bool GameIsOver { get; private set; }
         private int emptyFieldsCount;
         public event Action<int, int, CellState> StateChanged;
         private Form1 form;
@@ -25,7 +25,7 @@ namespace Miner
             this.form = form;
             Width = width; 
             Height = height;
-            IsOver = false;
+            GameIsOver = false;
             hiddenField = new CellState[width, height];
             GameField = new CellState[width, height];
         }
@@ -60,8 +60,14 @@ namespace Miner
                 SetState(row, column, hiddenField[row, column]);
                 emptyFieldsCount--;
             }
-            if (emptyFieldsCount == 0 && !IsOver)
+
+            if (emptyFieldsCount == 0 && !GameIsOver)
                 GameWon();
+
+            if (GameField[row, column] == CellState.Marked
+                && hiddenField[row, column] == CellState.Mine
+                && GameIsOver)
+                SetState(row, column, CellState.Mine);
         }
 
         public void MarkCell(int row, int column)
@@ -115,11 +121,11 @@ namespace Miner
         
         public void GameOver()
         {
-            IsOver = true;
+            GameIsOver = true;
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
                 {
-                    if (GameField[row, column] == CellState.Unknown
+                    if (GameField[row, column] == CellState.Unknown || GameField[row, column] == CellState.Marked
                         && hiddenField[row, column] == CellState.Mine)
                         OpenCell(row, column);
                 }

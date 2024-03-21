@@ -27,7 +27,7 @@ namespace Miner
             for (int row = 0; row < _game.Height; row++)
                 for (int column = 0; column < _game.Width; column++)
                 {
-                    var button = new DoubleClickableButton() { Dock = DockStyle.Fill };
+                    var button = new DoubleClickableButton() { Dock = DockStyle.Fill, Margin = new Padding(1) };
                     _table.Controls.Add(button, column, row);
                     _game.InitCommands(button, row, column);
                 }

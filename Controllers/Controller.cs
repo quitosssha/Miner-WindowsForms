@@ -68,7 +68,7 @@ namespace Miner.Controllers
 
             game.StateChanged += (row, column, state) =>
             {
-                if (state == CellState.Mine && !game.IsOver)
+                if (state == CellState.Mine && !game.GameIsOver)
                     game.GameOver();
             };
         }
