@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Miner
 
         public event Action<int, int, CellState> StateChanged;
 
-        private Timer timer = new Timer();
+        private Stopwatch watch = new Stopwatch();
         private int emptyFieldsCount;
         private readonly int minesCount;
         private readonly Form1 form;
@@ -69,7 +70,7 @@ namespace Miner
                     hiddenField[row, column] = CellState.Empty;
             }
 
-            timer.Start();
+            watch.Start();
         }
 
         public void OpenCell(int row, int column)
@@ -140,7 +141,7 @@ namespace Miner
         
         public void GameOver()
         {
-            timer.Stop();
+            watch.Stop();
             GameIsOver = true;
             for (int row = 0; row < Height; row++)
                 for (int column = 0; column < Width; column++)
@@ -154,8 +155,10 @@ namespace Miner
 
         private void GameWon()
         {
-            timer.Stop();
-            form.FinishGameWithMessage("Вы победили! Начать сначала?", "Победа!");
+            watch.Stop();
+            var t = watch.ElapsedMilliseconds;
+            form.FinishGameWithMessage
+                ($"Вы победили за {t/1000},{t%1000} сек!\nНачать сначала?", "Победа!");
         }
     }
 }
