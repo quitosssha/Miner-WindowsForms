@@ -15,6 +15,7 @@ namespace Miner
         GameModel _game;
         TableLayoutPanel _table;
         TableLayoutPanel _head;
+        Timer _timer = new Timer();
 
         void StartNewGame()
         {
@@ -37,7 +38,7 @@ namespace Miner
 
             BuildHead();
 
-            _game.InitHead(_head);
+            _game.InitHead(_head, _timer);
             _game.InitStateChanged(_table, ColorsByCellState);
 
             _game.Start();
@@ -45,13 +46,21 @@ namespace Miner
 
         void BuildHead()
         {
-            _head = new TableLayoutPanel() { Dock = DockStyle.Top, Height = 30 };
+            _head = new TableLayoutPanel() { Dock = DockStyle.Top, Height = 20 };
             _head.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
 
-            Label leftMinesLabel = new Label() { AutoSize = true };
+            Label leftMinesLabel = new Label()
+            {
+                AutoSize = true,
+                Font = new Font("Arial", 11f)
+            };
             _head.Controls.Add(leftMinesLabel, 0, 0);
 
-            Label timeElapsedLabel = new Label() { AutoSize = true };
+            Label timeElapsedLabel = new Label()
+            {
+                AutoSize = true,
+                Font = new Font("Arial", 11f)
+            };
             _head.Controls.Add(timeElapsedLabel, 1, 0);
 
             Controls.Add(_head);

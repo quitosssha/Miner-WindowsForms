@@ -27,12 +27,13 @@ namespace Miner
             ClientSize = new Size(300, 300);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
-            ClientSize = new Size(_gameWidth * 30, _gameHeight * 30 + 30);
+            ClientSize = new Size(_gameWidth * 30, _gameHeight * 30 + 20);
             StartNewGame();
         }
 
         public void FinishGameWithMessage(string message, string caption = "")
         {
+            _timer.Stop();
             var result = MessageBox.Show(message, caption,
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 

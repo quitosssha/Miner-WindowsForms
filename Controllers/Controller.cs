@@ -72,15 +72,26 @@ namespace Miner.Controllers
             };
         }
 
-        public static void InitHead(this GameModel game, TableLayoutPanel head)
+
+        public static void InitHead(this GameModel game, TableLayoutPanel head, Timer timer)
         {
             var leftMinesLabel = (Label)head.GetControlFromPosition(0, 0);
-            var timeElapsedLabel = (Label)head.GetControlFromPosition(1, 0);
-
             game.MinesAmountChanged += (amount) =>
             {
+                if (amount < 0)
+                    leftMinesLabel.ForeColor = Color.Red;
+                else
+                    leftMinesLabel.ForeColor = Color.Black;
                 leftMinesLabel.Text = $"Mines left: {amount}";
             };
+
+            var timeElapsedLabel = (Label)head.GetControlFromPosition(1, 0);
+            timer.Interval = 100;
+            timer.Tick += (sender, args) =>
+            {
+                timeElapsedLabel.Text = $"{game.TimeElapsed}";
+            };
+            timer.Start();
         }
     }
 }

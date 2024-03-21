@@ -17,11 +17,12 @@ namespace Miner
         public int Width { get; }
         public int Height { get; }
         public bool GameIsOver { get; private set; } = false;
+        public string TimeElapsed { get => watch.Elapsed.ToString(@"mm\:ss\:ff"); }
 
         public event Action<int, int, CellState> StateChanged;
         public event Action<int> MinesAmountChanged;
 
-        private Stopwatch watch = new Stopwatch();
+        private readonly Stopwatch watch = new Stopwatch();
         private int emptyFieldsCount;
         private readonly int minesCount;
         private int markedFieldsCount = 0;
@@ -58,6 +59,7 @@ namespace Miner
                     minesPlaced++;
                 }
             }
+            MinesAmountChanged?.Invoke(minesCount);
 
             for (int row = 0; row < Height; row++)
             for (int column = 0; column < Width; column++)
@@ -67,7 +69,6 @@ namespace Miner
                     hiddenField[row, column] = CellState.Empty;
             }
 
-            MinesAmountChanged?.Invoke(minesCount);
             watch.Start();
         }
 
