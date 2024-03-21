@@ -12,16 +12,11 @@ namespace Miner
 {
     public class GameModel
     {
-        private CellState[,] hiddenField;
+        private readonly CellState[,] hiddenField;
         public CellState[,] GameField { get; private set; }
         public int Width { get; }
         public int Height { get; }
         public bool GameIsOver { get; private set; } = false;
-
-        //public double ElapsedTime
-        //{
-        //    get => timer.
-        //}
 
         public event Action<int, int, CellState> StateChanged;
 
@@ -37,8 +32,8 @@ namespace Miner
             Height = height;
             minesCount = minesAmount;
             emptyFieldsCount = width * height - minesAmount;
-            hiddenField = new CellState[width, height];
-            GameField = new CellState[width, height];
+            hiddenField = new CellState[height, width];
+            GameField = new CellState[height, width];
         }
 
         void SetState(int row, int column, CellState state)

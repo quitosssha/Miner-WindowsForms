@@ -17,8 +17,8 @@ namespace Miner
 {
     public partial class Form1 : Form
     {
-        readonly int _gameWidth = 10;
-        readonly int _gameHeight = 10;
+        readonly int _gameWidth = 19;
+        readonly int _gameHeight = 15;
         readonly int _amountOfMines = 10;
 
         public Form1()
