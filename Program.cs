@@ -9,11 +9,17 @@ namespace Miner
 {
     internal static class Program
     {
+        public static int width;
+        public static int height;
+        public static int mines;
+
         static void Main()
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            StartMenuForm startForm = new StartMenuForm();
+            Application.Run(startForm);
+            Application.Run(new Form1(startForm.Level));
         }
     }
 }

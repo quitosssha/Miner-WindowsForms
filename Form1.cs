@@ -17,14 +17,15 @@ namespace Miner
 {
     public partial class Form1 : Form
     {
-        readonly int _gameWidth = 10;
-        readonly int _gameHeight = 10;
-        readonly int _amountOfMines = 10;
+        readonly int _gameWidth;
+        readonly int _gameHeight;
+        readonly int _amountOfMines;
 
-        public Form1()
+        public Form1(Level level)
         {
-            InitializeComponent();
-            ClientSize = new Size(300, 300);
+            _gameWidth = level.Width;
+            _gameHeight = level.Height;
+            _amountOfMines = level.Mines;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             ClientSize = new Size(_gameWidth * 30, _gameHeight * 30 + 20);
